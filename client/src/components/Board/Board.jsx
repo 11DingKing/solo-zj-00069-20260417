@@ -49,7 +49,15 @@ const Board = React.memo(({ id, listIds, isCardModalOpened, canEdit, defaultView
           const [, listId, indexOverride] = parseDndDestination(destination.droppableId);
           const [, sourceListId] = parseDndDestination(source.droppableId);
 
-          onCardMove(dndId, listId, (listId === sourceListId ? indexOverride - 1 : indexOverride) || destination.index);
+          let toIndex;
+          if (indexOverride !== undefined) {
+            const overrideNum = parseInt(indexOverride, 10);
+            toIndex = listId === sourceListId ? overrideNum - 1 : overrideNum;
+          } else {
+            toIndex = destination.index;
+          }
+
+          onCardMove(dndId, listId, toIndex);
 
           break;
         }
